@@ -1,9 +1,20 @@
 import React, { Component } from 'react'
 import Show from '../Show'
 
-export default class extends Component {
+export default class ManageShows extends Component {
     state = {
-        show: {}
+        show: {
+            name: '',
+            rating: -1,
+            imagePreview: ''
+        },
+        shows: [
+            {
+                name: 'Walking Dead',
+                rating: 4,
+                imagePreview: 'http://cdn1us.denofgeek.com/sites/denofgeekus/files/styles/main_wide/public/2018/01/the-walking-dead-season-8.jpg?itok=wE0cjlWr'
+            }
+        ]
     }
     handleOnChange = (event) => {
         if (event.target.id === "nameInput") {
@@ -12,7 +23,8 @@ export default class extends Component {
             })
         } else if (event.target.id === "ratingInput") {
             this.setState({
-                newShowRating: event.target.value
+                newShowRating: Number(event.target.value)
+                // this is to convert a string to a numnber
             })
         } else if (event.target.id === "imageInput") {
             this.setState({
@@ -22,15 +34,47 @@ export default class extends Component {
     }
 
     handleOnClick = () => {
-        this.setState((previousState) => {
+        this.setState((prev) => {
+            const existingShows = prev.shows
+            existingShows.push({
+                name: prev.newShowName,
+                rating: prev.newShowRating,
+                imagePreview: prev.newShowImage
+
+            })
             return {
-                show: {
-                    name: previousState.newShowName,
-                    rating: previousState.newShowRating,
-                    imagePreview: previousState.newShowImage
-                }
+                shows: existingShows
             }
         })
+    }
+
+    renderShows = () => {
+        // const showComponents = []
+
+        // for (const show of this.state.shows) {
+        //     showComponents.push(
+        //         <Show key={0} name={show.name} rating={show.rating} imagePreview={show.imagePreview} />
+        //     )
+        // }
+
+        // for ( let i = 0; i < this.state.shows.length; i++ ){
+        //     const show = this.state.shows[i];
+
+        //     showComponents.push(
+        //         <Show key={i} name={show.name} rating={show.rating} imagePreview={show.imagePreview} />
+        //     )
+        // }
+
+
+
+        // return showComponents
+
+        return this.state.shows.map ((show, i) => {
+            return(
+                <Show key={i} name={show.name} rating={show.rating} imagePreview={show.imagePreview} />
+            )
+        })
+
     }
 
 
@@ -43,7 +87,7 @@ export default class extends Component {
                         <h1>All Show</h1>
                     </header>
                     <div>
-                        <Show name={this.state.show.name} rating={this.state.show.rating} imagePreview={this.state.show.imagePreview} />
+                        {this.renderShows()}
                     </div>
 
                 </section>
