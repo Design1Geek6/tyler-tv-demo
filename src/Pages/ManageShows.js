@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import Show from '../Show'
+import './ManageShows.css'
+import ReactPropTypes from 'prop-types'
 
 export default class ManageShows extends Component {
+    static proTypes = {
+        createShow: ReactPropTypes.func.isRequired
+    }
     state = {
         show: {
             name: '',
@@ -34,17 +39,10 @@ export default class ManageShows extends Component {
     }
 
     handleOnClick = () => {
-        this.setState((prev) => {
-            const existingShows = prev.shows
-            existingShows.push({
-                name: prev.newShowName,
-                rating: prev.newShowRating,
-                imagePreview: prev.newShowImage
-
-            })
-            return {
-                shows: existingShows
-            }
+        this.props.createShows({
+            name: this.state.newShowName,
+            rating: this.state.newShowRating,
+            imagePreview: this.state.newShowImage
         })
     }
 
@@ -69,8 +67,8 @@ export default class ManageShows extends Component {
 
         // return showComponents
 
-        return this.state.shows.map ((show, i) => {
-            return(
+        return this.props.allShows.map((show, i) => {
+            return (
                 <Show key={i} name={show.name} rating={show.rating} imagePreview={show.imagePreview} />
             )
         })
@@ -81,7 +79,7 @@ export default class ManageShows extends Component {
     render() {
         console.log(this.state)
         return (
-            <div>
+            <div className="manageShows">
                 <section className="viewAllShows">
                     <header>
                         <h1>All Show</h1>
