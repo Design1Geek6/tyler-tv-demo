@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
+import ReactPropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import Show from '../Show'
 import './ManageShows.css'
-import ReactPropTypes from 'prop-types'
+
 
 export default class ManageShows extends Component {
     static proTypes = {
@@ -39,7 +41,7 @@ export default class ManageShows extends Component {
     }
 
     handleOnClick = () => {
-        this.props.createShows({
+        this.props.createShow({
             name: this.state.newShowName,
             rating: this.state.newShowRating,
             imagePreview: this.state.newShowImage
@@ -87,7 +89,7 @@ export default class ManageShows extends Component {
                     <div>
                         {this.renderShows()}
                     </div>
-
+                    <Link to="/">View Shows</Link>
                 </section>
                 <section className="createShow">
                     <header>
