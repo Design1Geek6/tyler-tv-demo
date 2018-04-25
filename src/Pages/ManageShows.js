@@ -14,14 +14,7 @@ export default class ManageShows extends Component {
             name: '',
             rating: -1,
             imagePreview: ''
-        },
-        shows: [
-            {
-                name: 'Walking Dead',
-                rating: 4,
-                imagePreview: 'http://cdn1us.denofgeek.com/sites/denofgeekus/files/styles/main_wide/public/2018/01/the-walking-dead-season-8.jpg?itok=wE0cjlWr'
-            }
-        ]
+        }
     }
     handleOnChange = (event) => {
         if (event.target.id === "nameInput") {
@@ -49,25 +42,6 @@ export default class ManageShows extends Component {
     }
 
     renderShows = () => {
-        // const showComponents = []
-
-        // for (const show of this.state.shows) {
-        //     showComponents.push(
-        //         <Show key={0} name={show.name} rating={show.rating} imagePreview={show.imagePreview} />
-        //     )
-        // }
-
-        // for ( let i = 0; i < this.state.shows.length; i++ ){
-        //     const show = this.state.shows[i];
-
-        //     showComponents.push(
-        //         <Show key={i} name={show.name} rating={show.rating} imagePreview={show.imagePreview} />
-        //     )
-        // }
-
-
-
-        // return showComponents
 
         return this.props.allShows.map((show, i) => {
             return (
@@ -77,6 +51,12 @@ export default class ManageShows extends Component {
 
     }
 
+    getAvgRating = () => {
+        const sumOfRatings = this.props.allShows.reduce((accumulator, show) => {
+            return show.rating + accumulator 
+        }, 0) 
+        return sumOfRatings / this.props.allShows.length
+    }
 
     render() {
         console.log(this.state)
@@ -85,6 +65,7 @@ export default class ManageShows extends Component {
                 <section className="viewAllShows">
                     <header>
                         <h1>All Show</h1>
+                        <p>Average Rating: {this.getAvgRating()}</p>
                     </header>
                     <div>
                         {this.renderShows()}
