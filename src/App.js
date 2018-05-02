@@ -5,30 +5,10 @@ import ViewShows from './Pages/ViewShows'
 import './App.css';
 
 
+
 class App extends Component {
   state = {
-    shows: [
-      {
-        name: 'Walking Dead',
-        rating: 5,
-        imagePreview: 'http://cdn1us.denofgeek.com/sites/denofgeekus/files/styles/main_wide/public/2018/01/the-walking-dead-season-8.jpg?itok=wE0cjlWr'
-      },
-      {
-        name: 'Walking Dead',
-        rating: 4,
-        imagePreview: 'http://cdn1us.denofgeek.com/sites/denofgeekus/files/styles/main_wide/public/2018/01/the-walking-dead-season-8.jpg?itok=wE0cjlWr'
-      },
-      {
-        name: 'Walking Dead',
-        rating: 3,
-        imagePreview: 'http://cdn1us.denofgeek.com/sites/denofgeekus/files/styles/main_wide/public/2018/01/the-walking-dead-season-8.jpg?itok=wE0cjlWr'
-      },
-      {
-        name: 'Walking Dead',
-        rating: 2,
-        imagePreview: 'http://cdn1us.denofgeek.com/sites/denofgeekus/files/styles/main_wide/public/2018/01/the-walking-dead-season-8.jpg?itok=wE0cjlWr'
-      },
-    ]
+    shows: []
   }
 
   createShows = (show) => {
@@ -42,8 +22,45 @@ class App extends Component {
     })
   }
 
+  testPromises = () => {
+    console.log('testing some promises')
+    new Promise((resolve, reject) => {
+      const success = true
+      setTimeout(() => {
+        if (success)
+          resolve('Promise Was Successfull')
+        else
+          reject('Promise Was Failed EPICLLY')
+      }, 3000)
+    })
+      .then((value) => { console.log(value) })
+      .catch((error) => { console.log(error) })
+    console.log('finished executing promise')
+  }
+
+  getShows = () => {
+    fetch('http://localhost:3001/shows')
+      .then((response) => {
+        console.log("response:", response)
+        return response.json()
+
+      })
+      .then((shows) => {
+        console.log("jsonData:", shows)
+        this.setState({ shows })
+      })
+      .catch((error) => {
+
+      })
+  }
+
+  componentDidMount() {
+    //this.testPromises()
+    this.getShows()
+  }
 
   render() {
+
     return (
       <Router>
         <div className="App">

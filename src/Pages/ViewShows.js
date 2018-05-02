@@ -5,7 +5,6 @@ import Show from '../Show'
 import './ViewShows.css'
 
 
-
 export default class ViewShows extends Component {
     static propTypes = {
         allShows: ReactPropTypes.array.isRequired
