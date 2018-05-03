@@ -11,7 +11,7 @@ class App extends Component {
     shows: []
   }
 
-  createShows = (show) => {
+  createShow = (show) => {
     this.setState((prev) => {
       const existingShows = prev.shows
       existingShows.push(show)
@@ -41,17 +41,46 @@ class App extends Component {
   getShows = () => {
     fetch('http://localhost:3001/shows')
       .then((response) => {
-        console.log("response:", response)
+        //console.log("response:", response)
         return response.json()
 
       })
       .then((shows) => {
-        console.log("jsonData:", shows)
+        // console.log("jsonData:", shows)
         this.setState({ shows })
       })
       .catch((error) => {
-
+        // console.log(error, 'also error')
+        this.setState({errorMessage: error})
       })
+  }
+
+  postShow = (showToSave) => {
+    const postInit = {
+      method: 'POST',
+      mode: 'cors',
+     // header: new Headers(),
+     headers: {
+       'Content-Type': 'application/json'
+     },
+      body: JSON.stringify(showToSave)
+    }
+    fetch('http://localhost:3001/shows', postInit)
+      .then((postShowResp) => {
+        return postShowResp.json()
+      })
+      .then((show) => {
+        this.createShow(show)
+      })
+      .catch((error) => {
+        this.setState({errorMessage: error})
+    })
+  }
+
+  renderError = () => {
+    return this.state.errorMessage
+    ? (<div>{this.state.errorMessage.toString()}</div>)
+    :(<div></div>)
   }
 
   componentDidMount() {
@@ -64,9 +93,10 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
+        {this.renderError()}
           <Switch>
             <Route exact path="/" component={() => <ViewShows allShows={this.state.shows} />} />
-            <Route path="/manageShows" component={() => <ManageShows allShows={this.state.shows} createShow={this.createShows} />} />
+            <Route path="/manageShows" component={() => <ManageShows allShows={this.state.shows} createShow={this.postShow} />} />
           </Switch>
         </div>
       </Router>
