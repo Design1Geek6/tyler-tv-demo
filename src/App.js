@@ -38,43 +38,69 @@ class App extends Component {
     console.log('finished executing promise')
   }
 
-  getShows = () => {
-    fetch('http://localhost:3001/shows')
-      .then((response) => {
-        //console.log("response:", response)
-        return response.json()
+  // getShows = () => {
+  //   fetch('http://localhost:3001/shows')
+  //     .then((response) => {
+  //       return response.json()
+  //     })
+  //     .then((shows) => {
+  //       this.setState({ shows })
+  //     })
+  //     .catch((error) => {
+  //       this.setState({errorMessage: error})
+  //     })
+  // }
 
-      })
-      .then((shows) => {
-        // console.log("jsonData:", shows)
-        this.setState({ shows })
-      })
-      .catch((error) => {
-        // console.log(error, 'also error')
-        this.setState({errorMessage: error})
-      })
+  getShows = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/shows')
+      const shows = await response.json()
+      this.setState({ shows })
+
+    }catch (error){
+      this.setState({ errorMessage: error })
+    }
   }
 
-  postShow = (showToSave) => {
+  // postShow = (showToSave) => {
+  //   const postInit = {
+  //     method: 'POST',
+  //     mode: 'cors',
+  //    // header: new Headers(),
+  //    headers: {
+  //      'Content-Type': 'application/json'
+  //    },
+  //     body: JSON.stringify(showToSave)
+  //   }
+  //   fetch('http://localhost:3001/shows', postInit)
+  //     .then((postShowResp) => {
+  //       return postShowResp.json()
+  //     })
+  //     .then((show) => {
+  //       this.createShow(show)
+  //     })
+  //     .catch((error) => {
+  //       this.setState({errorMessage: error})
+  //   })
+  // }
+
+  postShow = async (showToSave) => {
     const postInit = {
       method: 'POST',
       mode: 'cors',
-     // header: new Headers(),
-     headers: {
-       'Content-Type': 'application/json'
-     },
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(showToSave)
     }
-    fetch('http://localhost:3001/shows', postInit)
-      .then((postShowResp) => {
-        return postShowResp.json()
-      })
-      .then((show) => {
-        this.createShow(show)
-      })
-      .catch((error) => {
-        this.setState({errorMessage: error})
-    })
+    try {
+      const postShowResp = await fetch('http://localhost:3001/shows', postInit)
+      const show = await postShowResp.json()
+      this.createShow( show )
+    }
+    catch (error) {
+      this.setState({ errorMessage: error })
+    }
   }
 
   renderError = () => {
